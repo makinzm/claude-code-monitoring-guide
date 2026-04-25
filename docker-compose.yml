@@ -29,6 +29,16 @@ services:
       - '--storage.tsdb.retention.time=200h'
       - '--web.enable-lifecycle'
 
+  # Loki (log storage)
+  loki:
+    image: grafana/loki:latest
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./loki-config.yaml:/etc/loki/local-config.yaml
+      - loki_data:/loki
+    command: -config.file=/etc/loki/local-config.yaml
+
   # Grafana
   grafana:
     image: grafana/grafana:latest
@@ -47,3 +57,4 @@ services:
 volumes:
   prometheus_data:
   grafana_data:
+  loki_data:

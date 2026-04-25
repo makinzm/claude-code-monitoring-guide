@@ -20,7 +20,10 @@ exporters:
     send_timestamps: true
     metric_expiration: 180m
     enable_open_metrics: true
-    
+
+  otlphttp/loki:
+    endpoint: http://loki:3100/otlp
+
   debug:
     verbosity: detailed
     sampling_initial: 5
@@ -32,6 +35,10 @@ service:
       receivers: [otlp]
       processors: [memory_limiter, batch]
       exporters: [prometheus, debug]
+    logs:
+      receivers: [otlp]
+      processors: [memory_limiter, batch]
+      exporters: [otlphttp/loki, debug]
       
   extensions: []
   
